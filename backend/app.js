@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Thing = require('./models/thing');
 const app = express();
+const Thing = require('./models/thing');
 
 mongoose.connect('mongodb+srv://adrienmidi:sBSve48UAx7PsNnD@cluster0.lw3nshi.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -47,6 +48,12 @@ app.get('/api/stuff', (req, res, next) => {
       },
     ];
     res.status(200).json(stuff);
+  });
+
+  app.use('/api/stuff', (req, res, next) => {
+    Thing.find()
+      .then(things => res.status(200).json(things))
+      .catch(error => res.status(400).json({ error }));
   });
 
   module.exports = app;
